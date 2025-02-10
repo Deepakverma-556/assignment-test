@@ -7,12 +7,21 @@ const MyForm = () => {
   const myState = {
     email: "",
     password: "",
+    customCheckBox: false,
   };
   const [formValue, setFormValue] = useState(myState);
+  const [error, setError] = useState();
 
   function handleSubmit(e) {
     e.preventDefault();
-    setFormValue(myState);
+    const newError = {};
+    if (formValue.email === "") newError.email = "email is required*";
+    if (formValue.password === "") newError.password = "password is required*";
+    if (formValue.customCheckBox === false) newError.customCheckBox = "fill the checkbox*";
+    setError(newError);
+    if (Object.keys(newError).length === 0) {
+      setFormValue(myState);
+    }
   }
   return (
     <div className="pt-[30px] pb-56 max-sm:pt-8 max-sm:pb-24">
@@ -47,12 +56,13 @@ const MyForm = () => {
                 id="email"
                 type="email"
                 placeholder="Email"
-                className="border border-lightGray rounded-lg py-[21.34px] px-[14px] w-full mt-1 mb-[18px] outline-none placeholder:text-sm placeholder:leading-6 placeholder:text-gray"
-              />
+                className="border border-lightGray rounded-lg py-[21.34px] px-[14px] w-full mt-1 outline-none placeholder:text-sm placeholder:leading-6 placeholder:text-gray"
+              />{" "}
+              {error?.email && <p className="text-red-600">{error.email}</p>}
             </label>
             <label
               htmlFor="password"
-              className="font-medium text-base leading-5 cursor-pointer"
+              className="font-medium text-base leading-5 cursor-pointer flex flex-col mt-[18px]"
             >
               {" "}
               Password <br />
@@ -61,11 +71,15 @@ const MyForm = () => {
                 onChange={(e) =>
                   setFormValue({ ...formValue, password: e.target.value })
                 }
+                pattern=".{6,}"
                 id="password"
                 type="password"
                 placeholder="••••••••"
                 className="border border-lightGray rounded-lg py-[21.34px] px-[14px] w-full mt-1 outline-none placeholder:text-sm placeholder:leading-6 placeholder:text-gray"
               />
+              {error?.password && (
+                <p className="text-red-600">{error.password}</p>
+              )}
             </label>
             <div className="flex justify-between pt-[18px] max-sm:flex-wrap">
               <label
@@ -73,11 +87,23 @@ const MyForm = () => {
                 className="font-inter text-base leading-6 text-darkGray cursor-pointer"
               >
                 <input
+                  checked={formValue.customCheckBox}
+                  onChange={(e) =>
+                    setFormValue({
+                      ...formValue,
+                      customCheckBox: e.target.checked,
+                    })
+                  }
                   id="checkbox"
                   type="checkbox"
                   className="mr-3 cursor-pointer"
-                />
+                />{" "}
                 Remember for 30 days
+                {error?.customCheckBox && (
+                  <p className="text-red-600 font-medium">
+                    {error.customCheckBox}
+                  </p>
+                )}
               </label>
               <p className="font-inter cursor-pointer text-base leading-6 text-blue max-sm:pt-[14px]">
                 Forgot password
