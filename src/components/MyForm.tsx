@@ -2,9 +2,15 @@
 import React, { useState } from "react";
 import { Google } from "@/utils/icons";
 import Image from "next/image";
+import { Slide, toast, ToastContainer } from "react-toastify";
 
+interface FormState {
+  email: string;
+  password: string;
+  customCheckBox: boolean;
+}
 const MyForm = () => {
-  const myState = {
+  const myState:FormState = {
     email: "",
     password: "",
     customCheckBox: false,
@@ -17,14 +23,19 @@ const MyForm = () => {
     const newError = {};
     if (formValue.email === "") newError.email = "email is required*";
     if (formValue.password === "") newError.password = "password is required*";
-    if (formValue.customCheckBox === false) newError.customCheckBox = "fill the checkbox*";
+    else if (formValue.password.length < 6)
+      newError.password = "password must be atleast 6 digit*";
+    if (formValue.customCheckBox === false)
+      newError.customCheckBox = "fill the checkbox*";
     setError(newError);
     if (Object.keys(newError).length === 0) {
       setFormValue(myState);
+      toast("submit successfully");
     }
   }
   return (
     <div className="pt-[30px] pb-56 max-sm:pt-8 max-sm:pb-24">
+      <ToastContainer position="top-right" transition={Slide} />
       <div className="max-w-[1172px] mx-auto px-4 max-sm:px-[35px] flex items-center w-full justify-between relative">
         <div className="max-w-[456px] w-full max-lg:mx-auto">
           <a href="http://localhost:3000/">
@@ -71,7 +82,6 @@ const MyForm = () => {
                 onChange={(e) =>
                   setFormValue({ ...formValue, password: e.target.value })
                 }
-                pattern=".{6,}"
                 id="password"
                 type="password"
                 placeholder="••••••••"
@@ -105,7 +115,7 @@ const MyForm = () => {
                   </p>
                 )}
               </label>
-              <p className="font-inter cursor-pointer text-base leading-6 text-blue max-sm:pt-[14px]">
+              <p className="font-inter cursor-pointer text-base leading-6 max-sm:w-full text-blue max-sm:pt-[14px]">
                 Forgot password
               </p>
             </div>
