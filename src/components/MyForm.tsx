@@ -5,13 +5,6 @@ import Image from "next/image";
 import { Slide, toast, ToastContainer } from "react-toastify";
 import { useRouter } from "next/navigation";
 
-// // interface define
-// interface FormState {
-//   email: string;
-//   password: string;
-//   customCheckBox: boolean;
-// }
-
 const MyForm = () => {
   const myRoute = useRouter();
   // initialstate
@@ -31,7 +24,7 @@ const MyForm = () => {
     setError(true);
     if (
       formValue.email !== "" &&
-      formValue.password !== "" &&
+      formValue.password.length >=6 &&
       formValue.customCheckBox !== false
     ) {
       setError(false);
@@ -99,7 +92,7 @@ const MyForm = () => {
                 className="border border-lightGray rounded-lg py-[21.34px] px-[14px] w-full mt-1 outline-none placeholder:text-sm placeholder:leading-6 placeholder:text-gray"
               />
               <p className="text-red-500">
-                {error && formValue.password === "" ? "Required" : ""}
+                {error && formValue.password.length <6 ? "Required and must be 6 characters" : ""}
               </p>
             </label>
             <div className="flex justify-between pt-[18px] max-sm:flex-wrap">
