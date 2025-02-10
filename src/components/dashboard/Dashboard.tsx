@@ -4,16 +4,17 @@ import React, { useState, useEffect } from "react";
 import { InlineWidget } from "react-calendly";
 
 const Dashboard = () => {
-  const router = useRouter();
+  const logOut = useRouter();
   const searchParams = useSearchParams();
+  const section = searchParams.get("section");
 
   // log out
   function remove() {
     localStorage.removeItem("formValue");
-    out.push("/");
+    logOut.push("/");
   }
 
-  // image upload state
+  // image upload state and other state
   const [image, setImage] = useState([]);
   const [_, setUrl] = useState(null);
   const [showQuestion, setShowQuestion] = useState(false);
@@ -38,6 +39,7 @@ const Dashboard = () => {
     setImage([]);
   };
 
+  // question 1
   const Question = [
     {
       list: {
@@ -64,35 +66,47 @@ const Dashboard = () => {
             log out
           </button>
           <button
+            className={`${
+              section === "question1" ? "bg-black text-white" : ""
+            } border border-black rounded-xl px-2 py-1`}
             onClick={() => {
-              router.push("/dashboard/?section=question1");
+              logOut.push("/dashboard/?section=question1");
             }}
           >
             question 1
           </button>
           <button
+            className={`${
+              section === "question2" ? "bg-black text-white" : ""
+            } border border-black rounded-xl px-2 py-1`}
             onClick={() => {
-              router.push("/dashboard/?section=question2");
+              logOut.push("/dashboard/?section=question2");
             }}
           >
             question 2
           </button>
           <button
+            className={`${
+              section === "question3" ? "bg-black text-white" : ""
+            } border border-black rounded-xl px-2 py-1`}
             onClick={() => {
-              router.push("/dashboard/?section=question3");
+              logOut.push("/dashboard/?section=question3");
             }}
           >
             question 3
           </button>
         </div>
         <div className="flex items-center justify-center w-full">
+          {/* question 1 */}
           {showQuestion && (
             <p>
               {title} {options}
             </p>
           )}
+
+          {/* Calendly */}
           {showSection2 && (
-            <div className="py-96 App">
+            <div className="">
               <InlineWidget
                 url="https://calendly.com/deepakradialcode"
                 pageSettings={{
@@ -105,6 +119,8 @@ const Dashboard = () => {
               />
             </div>
           )}
+
+          {/* image upload */}
           {showUpload && (
             <>
               <input
