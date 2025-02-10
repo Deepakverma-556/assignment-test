@@ -6,23 +6,23 @@ import { InlineWidget } from "react-calendly";
 const Dashboard = () => {
   const logOut = useRouter();
   const searchParams = useSearchParams();
-  const section = searchParams.get("section");
+  const section = searchParams.get("value");
 
-  // log out
+  // log out function
   function remove() {
     localStorage.removeItem("formValue");
     logOut.push("/");
   }
 
-  // image upload state and other state
+  // define states
   const [image, setImage] = useState([]);
   const [_, setUrl] = useState(null);
-  const [showQuestion, setShowQuestion] = useState(false);
+  const [showQuestion, setShowQuestion] = useState(true);
   const [showUpload, setShowUpload] = useState(false);
   const [showSection2, setShowSection2] = useState(false);
 
   useEffect(() => {
-    const section = searchParams.get("section");
+    const section = searchParams.get("value");
     setShowQuestion(section === "question1");
     setShowSection2(section === "question2");
     setShowUpload(section === "question3");
@@ -65,12 +65,14 @@ const Dashboard = () => {
           >
             log out
           </button>
+
+          {/* buttons */}
           <button
             className={`${
               section === "question1" ? "bg-black text-white" : ""
             } border border-black rounded-xl px-2 py-1`}
             onClick={() => {
-              logOut.push("/dashboard/?section=question1");
+              logOut.push("/dashboard/?value=question1");
             }}
           >
             question 1
@@ -80,7 +82,7 @@ const Dashboard = () => {
               section === "question2" ? "bg-black text-white" : ""
             } border border-black rounded-xl px-2 py-1`}
             onClick={() => {
-              logOut.push("/dashboard/?section=question2");
+              logOut.push("/dashboard/?value=question2");
             }}
           >
             question 2
@@ -90,7 +92,7 @@ const Dashboard = () => {
               section === "question3" ? "bg-black text-white" : ""
             } border border-black rounded-xl px-2 py-1`}
             onClick={() => {
-              logOut.push("/dashboard/?section=question3");
+              logOut.push("/dashboard/?value=question3");
             }}
           >
             question 3

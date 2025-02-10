@@ -1,22 +1,21 @@
 "use client";
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { Google } from "@/utils/icons";
 import Image from "next/image";
 import { Slide, toast, ToastContainer } from "react-toastify";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-// interface define
-interface FormState {
-  email: string;
-  password: string;
-  customCheckBox: boolean;
-}
+// // interface define
+// interface FormState {
+//   email: string;
+//   password: string;
+//   customCheckBox: boolean;
+// }
 
 const MyForm = () => {
-const myRoute = useRouter()
+  const myRoute = useRouter();
   // initialstate
-  const myState:FormState = {
+  const myState = {
     email: "",
     password: "",
     customCheckBox: false,
@@ -24,29 +23,24 @@ const myRoute = useRouter()
 
   // create states
   const [formValue, setFormValue] = useState(myState);
-  const [error, setError] = useState();
+  const [error, setError] = useState(false);
 
   // on submit function
-  function handleSubmit(e) {
+  function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    const newError = {};
-
-    // define errors
-    if (formValue.email === "") newError.email = "email is required*";
-    if (formValue.password === "") newError.password = "password is required*";
-    else if (formValue.password.length < 6)
-      newError.password = "password must be atleast 6 digit*";
-    if (formValue.customCheckBox === false)
-      newError.customCheckBox = "fill the checkbox*";
-    setError(newError);
-
-    // empty state and setitem in local storage
-    if (Object.keys(newError).length === 0) {
-      localStorage.setItem("formValue", JSON.stringify(formValue));
-      setFormValue(myState);
+    setError(true);
+    if (
+      formValue.email !== "" &&
+      formValue.password !== "" &&
+      formValue.customCheckBox !== false
+    ) {
+      setError(false);
+      setFormValue(myState)
       toast("submit successfully");
-      myRoute.push("/dashboard")
+      localStorage.setItem("formValue", JSON.stringify(formValue));
+      myRoute.push("/dashboard");
     }
+
   }
   return (
     <div className="pt-[30px] pb-56 max-sm:pt-8 max-sm:pb-24 overflow-x-hidden">
@@ -84,7 +78,9 @@ const myRoute = useRouter()
                 placeholder="Email"
                 className="border border-lightGray rounded-lg py-[21.34px] px-[14px] w-full mt-1 outline-none placeholder:text-sm placeholder:leading-6 placeholder:text-gray"
               />{" "}
-              {error?.email && <p className="text-red-600">{error.email}</p>}
+              <p className="text-red-500">
+                {error && formValue.email === "" ? "Required" : ""}
+              </p>
             </label>
             <label
               htmlFor="password"
@@ -102,9 +98,9 @@ const myRoute = useRouter()
                 placeholder="••••••••"
                 className="border border-lightGray rounded-lg py-[21.34px] px-[14px] w-full mt-1 outline-none placeholder:text-sm placeholder:leading-6 placeholder:text-gray"
               />
-              {error?.password && (
-                <p className="text-red-600">{error.password}</p>
-              )}
+              <p className="text-red-500">
+                {error && formValue.password === "" ? "Required" : ""}
+              </p>
             </label>
             <div className="flex justify-between pt-[18px] max-sm:flex-wrap">
               <label
@@ -124,11 +120,11 @@ const myRoute = useRouter()
                   className="mr-3 cursor-pointer"
                 />{" "}
                 Remember for 30 days
-                {error?.customCheckBox && (
-                  <p className="text-red-600 font-medium">
-                    {error.customCheckBox}
-                  </p>
-                )}
+                <p className="text-red-500">
+                  {error && formValue.customCheckBox === false
+                    ? "Required"
+                    : ""}
+                </p>
               </label>
               <p className="font-inter cursor-pointer text-base leading-6 max-sm:w-full text-blue max-sm:pt-[14px]">
                 Forgot password
