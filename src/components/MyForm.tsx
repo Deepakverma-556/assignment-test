@@ -1,10 +1,19 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import { Google } from "@/utils/icons";
 import Image from "next/image";
 
 const MyForm = () => {
-  const [formValue, setFormValue] = useState();
+  const myState = {
+    email: "",
+    password: "",
+  };
+  const [formValue, setFormValue] = useState(myState);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setFormValue(myState);
+  }
   return (
     <div className="pt-[30px] pb-56 max-sm:pt-8 max-sm:pb-24">
       <div className="max-w-[1172px] mx-auto px-4 max-sm:px-[35px] flex items-center w-full justify-between relative">
@@ -23,7 +32,7 @@ const MyForm = () => {
           <p className="text-sm leading-[30px] text-gray pb-[31px]">
             Welcome back! Please enter your details.
           </p>
-          <form>
+          <form onSubmit={handleSubmit}>
             <label
               htmlFor="email"
               className="font-medium text-base leading-5 cursor-pointer"
@@ -31,6 +40,10 @@ const MyForm = () => {
               {" "}
               Email <br />
               <input
+                value={formValue.email}
+                onChange={(e) =>
+                  setFormValue({ ...formValue, email: e.target.value })
+                }
                 id="email"
                 type="email"
                 placeholder="Email"
@@ -44,6 +57,10 @@ const MyForm = () => {
               {" "}
               Password <br />
               <input
+                value={formValue.password}
+                onChange={(e) =>
+                  setFormValue({ ...formValue, password: e.target.value })
+                }
                 id="password"
                 type="password"
                 placeholder="••••••••"
@@ -66,7 +83,10 @@ const MyForm = () => {
                 Forgot password
               </p>
             </div>
-            <button className="font-medium mt-6 max-sm:mt-[19px] mb-[6px] text-sm leading-6 text-nowrap bg-black text-white w-full text-center py-[9.5px] rounded-lg">
+            <button
+              type="submit"
+              className="font-medium mt-6 max-sm:mt-[19px] mb-[6px] text-sm leading-6 text-nowrap bg-black text-white w-full text-center py-[9.5px] rounded-lg"
+            >
               Sign In
             </button>
             <button className="font-medium text-sm leading-5 flex items-center justify-center text-nowrap text-black w-full py-[10.5px] rounded-lg border border-lightGray gap-[10px]">
