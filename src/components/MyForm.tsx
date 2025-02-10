@@ -3,24 +3,35 @@ import React, { useState } from "react";
 import { Google } from "@/utils/icons";
 import Image from "next/image";
 import { Slide, toast, ToastContainer } from "react-toastify";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
+// interface define
 interface FormState {
   email: string;
   password: string;
   customCheckBox: boolean;
 }
+
 const MyForm = () => {
+const myRoute = useRouter()
+  // initialstate
   const myState:FormState = {
     email: "",
     password: "",
     customCheckBox: false,
   };
+
+  // create states
   const [formValue, setFormValue] = useState(myState);
   const [error, setError] = useState();
 
+  // on submit function
   function handleSubmit(e) {
     e.preventDefault();
     const newError = {};
+
+    // define errors
     if (formValue.email === "") newError.email = "email is required*";
     if (formValue.password === "") newError.password = "password is required*";
     else if (formValue.password.length < 6)
@@ -28,13 +39,17 @@ const MyForm = () => {
     if (formValue.customCheckBox === false)
       newError.customCheckBox = "fill the checkbox*";
     setError(newError);
+
+    // empty state and setitem in local storage
     if (Object.keys(newError).length === 0) {
+      localStorage.setItem("formValue", JSON.stringify(formValue));
       setFormValue(myState);
       toast("submit successfully");
+      myRoute.push("/dashboard")
     }
   }
   return (
-    <div className="pt-[30px] pb-56 max-sm:pt-8 max-sm:pb-24">
+    <div className="pt-[30px] pb-56 max-sm:pt-8 max-sm:pb-24 overflow-x-hidden">
       <ToastContainer position="top-right" transition={Slide} />
       <div className="max-w-[1172px] mx-auto px-4 max-sm:px-[35px] flex items-center w-full justify-between relative">
         <div className="max-w-[456px] w-full max-lg:mx-auto">
