@@ -1,6 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FormEvent } from "react";
 import { InlineWidget } from "react-calendly";
 
 const Dashboard = () => {
@@ -28,10 +28,10 @@ const Dashboard = () => {
     setShowUpload(section === "question3");
   }, [searchParams]);
 
-  const uploadImage = (e) => {
+  const uploadImage = (e : any) => {
     const url = URL.createObjectURL(e.target.files[0]);
-    setUrl(url);
-    setImage([...image, url]);
+    setUrl(url as any);
+    setImage([...image, url] as any);
   };
 
   // image delete
