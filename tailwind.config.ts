@@ -8,9 +8,11 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        inter: ["inter", "serif"],
+      },
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        gray: "#656566",
       },
     },
   },
