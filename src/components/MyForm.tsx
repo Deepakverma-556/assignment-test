@@ -23,7 +23,7 @@ const MyForm = () => {
     e.preventDefault();
     setError(true);
     if (
-      formValue.email !== "" &&
+      formValue.email.includes("@") &&
       formValue.password.length >= 6 &&
       formValue.customCheckBox !== false
     ) {
@@ -77,7 +77,7 @@ const MyForm = () => {
                 className="border border-lightGray rounded-lg py-[21.34px] px-[14px] w-full mt-1 outline-none placeholder:text-sm placeholder:leading-6 placeholder:text-gray"
               />{" "}
               <p className="text-red-500">
-                {error && formValue.email === "" ? "Required" : ""}
+                {error && formValue.email.includes("@") === false ? "Required and write email format" : ""}
               </p>
             </label>
             <label
