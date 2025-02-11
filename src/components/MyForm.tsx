@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useState,useEffect } from "react";
 import { Google } from "@/utils/icons";
 import Image from "next/image";
 import { Slide, toast, ToastContainer } from "react-toastify";
@@ -30,11 +30,16 @@ const MyForm = () => {
       setError(false);
       setFormValue(myState)
       toast("submit successfully");
-      localStorage.setItem("formValue", JSON.stringify(formValue));
+      localStorage.setItem("formValue", "true");
       myRoute.push("/dashboard");
     }
-
   }
+    useEffect(() => {
+      const isAuthenticated = localStorage.getItem("formValue");
+      if (isAuthenticated === "true") {
+        myRoute.push("/dashboard");
+      }
+    });
   return (
     <div className="pt-[30px] pb-56 max-sm:pt-8 max-sm:pb-24 overflow-x-hidden">
       <ToastContainer position="top-right" transition={Slide} />
@@ -92,7 +97,9 @@ const MyForm = () => {
                 className="border border-lightGray rounded-lg py-[21.34px] px-[14px] w-full mt-1 outline-none placeholder:text-sm placeholder:leading-6 placeholder:text-gray"
               />
               <p className="text-red-500">
-                {error && formValue.password.length <6 ? "Required and must be 6 characters" : ""}
+                {error && formValue.password.length < 6
+                  ? "Required and must be 6 characters"
+                  : ""}
               </p>
             </label>
             <div className="flex justify-between pt-[18px] max-sm:flex-wrap">
@@ -119,22 +126,24 @@ const MyForm = () => {
                     : ""}
                 </p>
               </label>
-              <p className="font-inter cursor-pointer text-base leading-6 max-sm:w-full text-blue max-sm:pt-[14px]">
+              <p className="font-inter hover:text-purple-500 transition-all duration-300 cursor-pointer text-base leading-6 max-sm:w-full text-blue max-sm:pt-[14px]">
                 Forgot password
               </p>
             </div>
             <button
               type="submit"
-              className="font-medium mt-6 max-sm:mt-[19px] mb-[6px] text-sm leading-6 text-nowrap bg-black text-white w-full text-center py-[9.5px] rounded-lg"
+              className="font-medium mt-6 hover:bg-white hover:text-black transition-all duration-300 border border-black max-sm:mt-[19px] mb-[6px] text-sm leading-6 text-nowrap bg-black text-white w-full text-center py-[9.5px] rounded-lg"
             >
               Sign In
             </button>
-            <button className="font-medium text-sm leading-5 flex items-center justify-center text-nowrap text-black w-full py-[10.5px] rounded-lg border border-lightGray gap-[10px]">
+            <button className="font-medium text-sm leading-5 hover:bg-black hover:text-white transition-all duration-300 flex items-center justify-center text-nowrap text-black w-full py-[10.5px] rounded-lg border border-lightGray gap-[10px]">
               <Google /> Sign in with Google
             </button>
             <p className="text-base leading-6 font-inter text-gray sm:text-center pt-[18px]">
               Don't have an account?{" "}
-              <span className="text-blue cursor-pointer">Sign up</span>
+              <span className="text-blue cursor-pointer hover:text-purple-500 transition-all duration-300">
+                Sign up
+              </span>
             </p>
           </form>
         </div>
@@ -143,7 +152,7 @@ const MyForm = () => {
           height={899}
           src={"/assets/images/png/hero.png"}
           alt="hero"
-          className="absolute -right-40 top-0 max-xl:w-[600px] max-lg:hidden"
+          className="absolute -right-40 top-0 max-xl:w-[500px] max-2xl:right-6 max-2xl:w-[600px] max-lg:hidden"
         />
       </div>
     </div>

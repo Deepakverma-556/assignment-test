@@ -14,6 +14,13 @@ const Dashboard = () => {
     logOut.push("/");
   }
 
+  useEffect(() => {
+    const storeValue = localStorage.getItem("formValue")
+    if (!storeValue) {
+      logOut.push("/")
+    }
+  })
+
   // define states
   const [image, setImage] = useState([]);
   const [_, setUrl] = useState(null);
