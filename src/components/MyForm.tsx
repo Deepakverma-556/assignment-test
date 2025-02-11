@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEvent, useState,useEffect } from "react";
+import React, { FormEvent, useState, useEffect } from "react";
 import { Google } from "@/utils/icons";
 import Image from "next/image";
 import { Slide, toast, ToastContainer } from "react-toastify";
@@ -24,28 +24,28 @@ const MyForm = () => {
     setError(true);
     if (
       formValue.email !== "" &&
-      formValue.password.length >=6 &&
+      formValue.password.length >= 6 &&
       formValue.customCheckBox !== false
     ) {
       setError(false);
-      setFormValue(myState)
+      setFormValue(myState);
       toast("submit successfully");
       localStorage.setItem("formValue", "true");
       myRoute.push("/dashboard");
     }
   }
-    useEffect(() => {
-      const isAuthenticated = localStorage.getItem("formValue");
-      if (isAuthenticated === "true") {
-        myRoute.push("/dashboard");
-      }
-    });
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem("formValue");
+    if (isAuthenticated === "true") {
+      myRoute.push("/dashboard");
+    }
+  });
   return (
     <div className="pt-[30px] pb-56 max-sm:pt-8 max-sm:pb-24 overflow-x-hidden">
       <ToastContainer position="top-right" transition={Slide} />
       <div className="max-w-[1172px] mx-auto px-4 max-sm:px-[35px] flex items-center w-full justify-between relative">
         <div className="max-w-[456px] w-full max-lg:mx-auto">
-          <a href="http://localhost:3000/">
+          <a href="/">
             <Image
               width={163}
               height={31.71}
@@ -59,7 +59,7 @@ const MyForm = () => {
           <p className="text-sm leading-[30px] text-gray pb-[31px]">
             Welcome back! Please enter your details.
           </p>
-          <form onSubmit={handleSubmit}>
+          <form>
             <label
               htmlFor="email"
               className="font-medium text-base leading-5 cursor-pointer"
@@ -117,7 +117,7 @@ const MyForm = () => {
                   }
                   id="checkbox"
                   type="checkbox"
-                  className="mr-3 cursor-pointer"
+                  className="mr-2 cursor-pointer"
                 />{" "}
                 Remember for 30 days
                 <p className="text-red-500">
@@ -131,12 +131,15 @@ const MyForm = () => {
               </p>
             </div>
             <button
-              type="submit"
+              onClick={handleSubmit}
               className="font-medium mt-6 hover:bg-white hover:text-black transition-all duration-300 border border-black max-sm:mt-[19px] mb-[6px] text-sm leading-6 text-nowrap bg-black text-white w-full text-center py-[9.5px] rounded-lg"
             >
               Sign In
             </button>
-            <button className="font-medium text-sm leading-5 hover:bg-black hover:text-white transition-all duration-300 flex items-center justify-center text-nowrap text-black w-full py-[10.5px] rounded-lg border border-lightGray gap-[10px]">
+            <button
+              onClick={(e) => e.preventDefault()}
+              className="font-medium text-sm leading-5 hover:bg-black hover:text-white transition-all duration-300 flex items-center justify-center text-nowrap text-black w-full py-[10.5px] rounded-lg border border-lightGray gap-[10px]"
+            >
               <Google /> Sign in with Google
             </button>
             <p className="text-base leading-6 font-inter text-gray sm:text-center pt-[18px]">
@@ -152,7 +155,7 @@ const MyForm = () => {
           height={899}
           src={"/assets/images/png/hero.png"}
           alt="hero"
-          className="absolute -right-40 top-0 max-xl:w-[500px] max-2xl:right-6 max-2xl:w-[600px] max-lg:hidden"
+          className="absolute -right-40 top-0 max-xl:w-[500px] max-2xl:right-6 max-2xl:w-[600px] max-lg:hidden pointer-events-none"
         />
       </div>
     </div>

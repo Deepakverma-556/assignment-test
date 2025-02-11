@@ -23,7 +23,6 @@ const Dashboard = () => {
 
   // define states
   const [image, setImage] = useState([]);
-  const [_, setUrl] = useState(null);
   const [showQuestion, setShowQuestion] = useState(true);
   const [showUpload, setShowUpload] = useState(false);
   const [showSection2, setShowSection2] = useState(false);
@@ -37,7 +36,6 @@ const Dashboard = () => {
 
   const uploadImage = (e : any) => {
     const url = URL.createObjectURL(e.target.files[0]);
-    setUrl(url as any);
     setImage([...image, url] as any);
   };
 
