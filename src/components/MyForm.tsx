@@ -18,14 +18,17 @@ const MyForm = () => {
   const [formValue, setFormValue] = useState(myState);
   const [error, setError] = useState(false);
 
+  const emailRegax = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+
   // on submit function
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError(true);
     if (
-      formValue.email.includes("@") &&
+      formValue.email.length > 0 &&
+      emailRegax.test(formValue.email) &&
       formValue.password.length >= 6 &&
-      formValue.customCheckBox !== false
+      formValue.customCheckBox
     ) {
       setError(false);
       setFormValue(myState);
@@ -77,7 +80,12 @@ const MyForm = () => {
                 className="border border-lightGray rounded-lg py-[21.34px] px-[14px] w-full mt-1 outline-none placeholder:text-sm placeholder:leading-6 placeholder:text-gray"
               />{" "}
               <p className="text-red-500">
-                {error && formValue.email.includes("@") === false ? "Required and write email format" : ""}
+                {error && formValue.email.length === 0
+                  ? "Required"
+                  : !emailRegax.test(formValue.email) &&
+                    formValue.email.length > 0
+                  ? "email is invalid"
+                  : ""}
               </p>
             </label>
             <label
@@ -97,8 +105,11 @@ const MyForm = () => {
                 className="border border-lightGray rounded-lg py-[21.34px] px-[14px] w-full mt-1 outline-none placeholder:text-sm placeholder:leading-6 placeholder:text-gray"
               />
               <p className="text-red-500">
-                {error && formValue.password.length < 6
-                  ? "Required and must be 6 characters"
+                {error && formValue.password.length === 0
+                  ? "password is required"
+                  : formValue.password.length < 6 &&
+                    formValue.password.length > 0
+                  ? "password at least 6 characters"
                   : ""}
               </p>
             </label>

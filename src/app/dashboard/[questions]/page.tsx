@@ -1,40 +1,31 @@
 "use client";
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { useState, useEffect, FormEvent } from "react";
+import { openSync } from "fs";
+import { useParams, useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
 import { InlineWidget } from "react-calendly";
 
 const Dashboard = () => {
-  const logOut = useRouter();
-  const searchParams = useSearchParams();
-  const section = searchParams.get("value");
+  const router = useRouter();
+  const params = useParams();
+  const { questions } = params;
 
   // log out function
   function remove() {
     localStorage.removeItem("formValue");
-    logOut.push("/");
+    router.push("/");
   }
 
   useEffect(() => {
-    const storeValue = localStorage.getItem("formValue")
-    if (!storeValue) {
-      logOut.push("/")
+    const storedValue = localStorage.getItem("formValue");
+    if (!storedValue) {
+      router.push("/");
     }
-  })
+  }, [router]);
 
   // define states
   const [image, setImage] = useState([]);
-  const [showQuestion, setShowQuestion] = useState(true);
-  const [showUpload, setShowUpload] = useState(false);
-  const [showSection2, setShowSection2] = useState(false);
 
-  useEffect(() => {
-    const section = searchParams.get("value");
-    setShowQuestion(section === "question1");
-    setShowSection2(section === "question2");
-    setShowUpload(section === "question3");
-  }, [searchParams]);
-
-  const uploadImage = (e : any) => {
+  const uploadImage = (e: any) => {
     const url = URL.createObjectURL(e.target.files[0]);
     setImage([...image, url] as any);
   };
@@ -74,61 +65,54 @@ const Dashboard = () => {
           {/* buttons */}
           <button
             className={`${
-              section === "question1" ? "bg-black text-white" : ""
+              questions === "question1" ? "bg-black text-white" : ""
             } border border-black rounded-xl px-2 py-1`}
             onClick={() => {
-              logOut.push("/dashboard/?value=question1");
+              router.push("/dashboard/question1");
             }}
           >
             question 1
           </button>
           <button
             className={`${
-              section === "question2" ? "bg-black text-white" : ""
+              questions === "question2" ? "bg-black text-white" : ""
             } border border-black rounded-xl px-2 py-1`}
             onClick={() => {
-              logOut.push("/dashboard/?value=question2");
+              router.push("/dashboard/question2");
             }}
           >
             question 2
           </button>
           <button
             className={`${
-              section === "question3" ? "bg-black text-white" : ""
+              questions === "question3" ? "bg-black text-white" : ""
             } border border-black rounded-xl px-2 py-1`}
             onClick={() => {
-              logOut.push("/dashboard/?value=question3");
+              router.push("/dashboard/question3");
             }}
           >
             question 3
           </button>
         </div>
         <div className="flex items-center justify-center w-full">
-          {/* question 1 */}
-          {showQuestion && (
-            <p>
-              {title} {options}
-            </p>
-          )}
-
-          {/* Calendly */}
-          {showSection2 && (
-            <div className="">
-              <InlineWidget
-                url="https://calendly.com/deepakradialcode"
-                pageSettings={{
-                  backgroundColor: "#000",
-                  hideEventTypeDetails: true,
-                  hideLandingPageDetails: false,
-                  primaryColor: "#ff0000",
-                  textColor: "#f6f6f6",
-                }}
-              />
+          {questions === "question1" ? (
+            <div>
+              <p>
+                {title} {options}
+              </p>
             </div>
-          )}
-
-          {/* image upload */}
-          {showUpload && (
+          ) : questions === "question2" ? (
+            <InlineWidget
+              url="https://calendly.com/deepakradialcode"
+              pageSettings={{
+                backgroundColor: "#000",
+                hideEventTypeDetails: true,
+                hideLandingPageDetails: false,
+                primaryColor: "#ff0000",
+                textColor: "#f6f6f6",
+              }}
+            />
+          ) : questions === "question3" ? (
             <>
               <input
                 multiple
@@ -170,7 +154,7 @@ const Dashboard = () => {
                 })}
               </div>
             </>
-          )}
+          ) : null}
         </div>
       </div>
     </div>
