@@ -23,11 +23,15 @@ const Dashboard = () => {
   }, [router]);
 
   // define states
-  const [image, setImage] = useState([]);
-
+  const [image, setImage] = useState<string[]>([]);
   const uploadImage = (e: any) => {
-    const url = URL.createObjectURL(e.target.files[0]);
-    setImage([...image, url] as any);
+    const file = e.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      const url = URL.createObjectURL(file);
+      setImage([...image, url] as any);
+    } else {
+      alert("not valid image");
+    }
   };
 
   // image delete
